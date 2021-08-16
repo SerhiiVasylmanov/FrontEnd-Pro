@@ -14,22 +14,20 @@ console.log('no arguments given ====>', rgb());
 
 //    Вариант 2.1 :
 
-var product = 'товар';
-var products = 'товара';
-var commodity = 'товаров';
+
 
 function words(n = 0) {
+    var product = 'товар';
+    var products = 'товара';
+    var commodity = 'товаров';
     if (n === 1 || n === 21 || n === 31 || n === 41) {
         return n + ' ' + product;
     }
     else if (n >= 2 && n <= 4 || n >= 22 && n <= 24 || n >= 32 && n <= 34 || n >= 42 && n <= 44) {
-        return d + ' ' + products;
+        return n + ' ' + products;
     }
     else if (n === 0 || n >= 5 && n <= 20 || n >= 25 && n <= 30 || n >= 35 && n <= 40 || n >= 45 && n <= 50) {
         return n + ' ' + commodity;
-    }
-    else {
-        return undefined;
     }
 }
 
