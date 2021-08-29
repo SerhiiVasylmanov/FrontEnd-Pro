@@ -39,14 +39,10 @@ console.log(max2([5, 22]), '2 elements test, must return 22');
 
 
 function max3(arr) {
-    var max = -Infinity;
+    var max = 0;
 
     for (var i = 0; i < arr.length; i++) {
         var number = arr[i];
-
-        if (Array.isArray(number)) {
-            number = findMax(number);
-        }
 
         if (number > max) {
             max = number;
