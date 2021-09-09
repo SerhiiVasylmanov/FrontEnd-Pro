@@ -1,0 +1,44 @@
+.container {
+    max-width: 1200px;
+    padding: 50px 0;
+    margin: 0 auto;
+    text-align: center;
+}
+
+table {
+    text-align: center;
+    border-collapse: collapse;
+    margin: 100px auto 0;
+}
+
+td,
+th {
+    border: 1px solid;
+    padding: 10px;
+    min-width: 200px;
+    background: white;
+    box-sizing: border-box;
+}
+
+input {
+    height: 30px;
+    width: 200px;
+    box-sizing: border-box;
+}
+
+#btn {
+    cursor: pointer;
+    background-color: blue;
+    border: none;
+    color: white;
+    padding: 5px;
+}
+
+.deleteBtn {
+    cursor: pointer;
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 5px;
+    width: 100px;
+}
