@@ -6,9 +6,7 @@ const errorMessage = 'You have not entered any text';
 
 btnAdd.addEventListener('click', onButtonAddClick);
 
-let removeEl = document.querySelector(".container");
-
-removeEl.addEventListener("click", onButtonRemoveItem);
+list.addEventListener("click", onListСontrolbtn);
 
 function onButtonAddClick() {
     if (!input.value) {
@@ -17,7 +15,6 @@ function onButtonAddClick() {
     }
     addTodo();
     inputReset();
-    onButtonReadyItem(listItem);
 };
 
 function inputError() {
@@ -49,9 +46,12 @@ function onButtonRemoveItem(e) {
     removeBtn.closest(".list_item").remove();
 }
 
-function onButtonReadyItem(item) {
-    let readyBtn = item.querySelector('.readyBtn');
-    let paragraph = item.querySelector('.paragraph');
+function onListСontrolbtn(e) {
+    if (e.target.classList.contains("readyBtn")) {
+        e.target.closest(".list_item").classList.toggle('green');
+    }
 
-    readyBtn.onclick = () => paragraph.classList.toggle('green');
-};
+    if (e.target.classList.contains("deleteBtn")) {
+        e.target.closest(".list_item").remove();
+    }
+}
