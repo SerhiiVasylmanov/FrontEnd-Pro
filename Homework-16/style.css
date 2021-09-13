@@ -1,0 +1,70 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    text-align: center;
+    color: black;
+}
+
+.list_item {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 20px;
+    color: rgb(75, 75, 75);
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+#input,
+#addBtn {
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 20px;
+    padding: 5px 15px;
+}
+
+#input {
+    width: 300px;
+    outline-color: blue;
+    margin-right: 30px;
+}
+
+.input_error::placeholder {
+    color: brown;
+    font-weight: 700;
+}
+
+#addBtn {
+    background-color: blue;
+    border: none;
+    border-radius: 10px;
+    color: white;
+}
+
+.deleteBtn {
+    cursor: pointer;
+    background-color: red;
+    border: none;
+    color: white;
+    padding: 5px;
+    width: 100px;
+    margin: 0 15px 0;
+}
+
+.readyBtn {
+    cursor: pointer;
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 5px;
+    width: 100px;
+}
+
+.paragraph {
+    padding: 5px;
+}
+
+.green {
+    background-color: green;
+    color: white;
+}
