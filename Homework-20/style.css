@@ -1,0 +1,68 @@
+body {
+    font-size: 18px;
+    line-height: 150%;
+    box-sizing: border-box;
+}
+
+.title {
+    font-weight: 900;
+    font-size: 40px;
+    line-height: normal;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 5vh;
+}
+
+#tabs {
+    width: 800px;
+    margin: 15vh auto 0;
+    border: 1px solid #000;
+    padding: 20px;
+    border-radius: 12px;
+}
+
+.tabs-nav {
+    display: flex;
+    border-bottom: 1px solid #000;
+}
+
+.tabs-main {
+    border-top: transparent;
+    border-bottom: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-radius: 0 0 8px 8px;
+}
+
+.btn {
+    font-size: 22px;
+    padding: 8px 16px;
+    border: 1px solid transparent;
+    color: blue;
+    cursor: pointer;
+    background: none;
+    margin-bottom: -1px;
+}
+
+.btn:hover {
+    border-top: 1px solid #000;
+    border-left: 1px solid #000;
+    border-right: 1px solid #000;
+    border-radius: 8px 8px 0 0;
+    color: #000;
+}
+
+.btn-active {
+    border-color: #000 #000 #fff;
+    border-radius: 8px 8px 0 0;
+    color: #000;
+}
+
+.body {
+    display: none;
+    padding: 12px;
+}
+
+.active {
+    display: block;
+}
