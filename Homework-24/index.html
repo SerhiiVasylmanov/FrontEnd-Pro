@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Document</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./api.js"></script>
+    <script defer src="./custom.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <input
+        class="message-input"
+        type="text"
+        placeholder="Введите данные"
+      />
+      <button class="add-button">Отправить</button>
+      <div id="loading" class="hide">Loading...</div>
+      <div id="error" class="error"></div>
+      <ul class="todo-list"></ul>
+    </div>
+    <script id="newTaskTemplate" type="text/template">
+      <li
+          class="todo-item {{doneClass}}"
+          data-id="{{todoId}}"
+          data-status="{{status}}"
+      >
+        <p class="paragraph">{{message}}</p>
+        <button class="done-button">Готово</button>
+        <button class="remove-button">Удалить</button>
+      </li>
+    </script>
+  </body>
+</html>
