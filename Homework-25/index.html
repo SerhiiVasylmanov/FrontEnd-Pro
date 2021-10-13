@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Homework-25</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script defer src="./api.js"></script>
+    <script defer src="./custom.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <table id="table-post">
+        <caption class="caption">
+          Список публикаций
+          <div id="error" class="error"></div>
+        </caption>
+        <thead class="table-header">
+          <tr>
+            <th>Id</th>
+            <th>Заголовок</th>
+            <th>Текст</th>
+            <th>Действия</th>
+          </tr>
+        </thead>
+        <tbody id="list-post"></tbody>
+        <tfoot class="table-footer">
+          <tr id="input-post-info">
+            <td><span id="loading" class="hide">Loading...</span></td>
+            <td><input type="text" id="input-post-title" /></td>
+            <td><input type="text" id="input-post-body" /></td>
+            <td><button id="add-post-btn">Добавить</button></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+    <script id="post-template" type="text/template">
+      <tr
+        class='post-item'
+        data-id='{{todoId}}'
+      >
+          <td class='post-id'>{{todoId}}</td>
+          <td class='post-title'>{{todoTitle}}</td>
+          <td class='post-body'>{{todoBody}}</td>
+          <td>
+              <button class='button-delete-post'>Удалить</button>
+          </td>
+      </tr>
+    </script>
+  </body>
+</html>
