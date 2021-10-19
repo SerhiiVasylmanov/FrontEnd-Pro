@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Homework-27</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+    ></script>
+    <script defer src="./api.js"></script>
+    <script defer src="./custom.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h2 class="header__title">Want to add a note?</h2>
+        <button class="header__btn">Add sticker</button>
+      </header>
+      <div class="server-info">
+        <div id="loading" class="hide">Loading...</div>
+        <div id="error" class="error"></div>
+      </div>
+      <main class="main">
+        <ul class="stickers-container"></ul>
+      </main>
+    </div>
+
+    <script id="sticker-template" type="text/template">
+      <li class="sticker sticker-body" data-id="{{id}}">
+        <p class="sticker sticker__header">
+          Id: {{id}}
+         <button class="sticker sticker__btn">&#215;</button>
+        </p>
+        <textarea class="sticker sticker__description {{update}}" placeholder="{{placeholder}}" cols="20" rows="5">{{description}}</textarea>
+      </li>
+    </script>
+  </body>
+</html>
