@@ -24,20 +24,17 @@
       </header>
       <div class="server-info">
         <div id="loading" class="hide">Loading...</div>
-        <div id="error" class="error"></div>
       </div>
       <main class="main">
         <ul class="stickers-container"></ul>
       </main>
     </div>
-
-    <script id="sticker-template" type="text/template">
-      <li class="sticker sticker-body" data-id="{{id}}">
-        <p class="sticker sticker__header">
-          Id: {{id}}
-         <button class="sticker sticker__btn">&#215;</button>
-        </p>
-        <textarea class="sticker sticker__description {{update}}" placeholder="{{placeholder}}" cols="20" rows="5">{{description}}</textarea>
+    <script type="text/template" id="stickerItemTemplate">
+      <li class="sticker__item" data-sticker-id="{{id}}">
+          <span class="delete__btn">✘</span>
+          <textarea class="sticker__description" name="text" cols="10" rows="5">
+              {{description}}
+          </textarea>
       </li>
     </script>
   </body>

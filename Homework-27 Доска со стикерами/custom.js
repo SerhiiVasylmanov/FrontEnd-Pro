@@ -1,154 +1,123 @@
-"use strict";
+const TEMPLATE_SELECTOR = '#stickerItemTemplate';
+const DELETE_STICKER_SELECTOR = '.delete__btn';
+const EDIT_STICKER_CONTROL_SELECTOR = '.sticker__description';
+const STICKER_LIST = '.stickers-container';
+const ADD_STICKER_BTN = '.header__btn';
+const LOADING = '#loading';
+const CLASS_HIDE = 'hide';
 
-const SELECTOR = {
-    ID_STICKER_TEMPL: "#sticker-template",
-    CLASS_STICKER_CONTAINER: ".stickers-container",
-    CLASS_HEADER_BTN: ".header__btn",
-    CLASS_STICKER_UPDATE: "updayting",
-    CLASS_STICKER: "sticker",
-    CLASS_STICKER_BODY: ".sticker-body",
-    CLASS_STICKER_CONT: ".sticker__description",
-    CLASS_STICKER_BTN: "sticker__btn",
-    LOADING: "#loading",
-    CLASS_HIDE: "hide",
-    ERROR: "#error",
-};
+let stickersArr = [];
 
-const $stickerHTML = $(SELECTOR.ID_STICKER_TEMPL).html();
+const stickerTemplate = $(TEMPLATE_SELECTOR).html();
+const $stickerListEl = $('.stickers-container')
+    .on('click', DELETE_STICKER_SELECTOR, onDeleteClick)
+    .on('focusout', EDIT_STICKER_CONTROL_SELECTOR, onListFocusout);
 
-const ELEMENT = {
-    STICKER_CONTAINER: $(SELECTOR.CLASS_STICKER_CONTAINER),
-    HEADER_BTN: $(SELECTOR.CLASS_HEADER_BTN),
-};
+$(ADD_STICKER_BTN).on('click', onAddStickerClick);
 
-$(document).ready(init);
-$(ELEMENT.HEADER_BTN).on('click', onHeaderBTNClick);
-$(ELEMENT.STICKER_CONTAINER).on('click', onStickerContainerClick);
+init();
+
+function onAddStickerClick(event) {
+    event.preventDefault();
+    submitForm();
+}
+
+function onDeleteClick(e) {
+    const $element = $(this).parent();
+
+    $element.fadeOut(1000, () => deleteSticker(getElementIndex($element)));
+}
+
+function onListFocusout(e) {
+    const description = $(this);
+
+    saveSticker(getElementIndex(description), {
+        description: description.val(),
+    });
+}
 
 function init() {
+    fetchSticker();
+}
+
+function fetchSticker() {
     toggleLoading();
 
-    DataApi.get()
-        .then(createStickers)
-        .catch(showError)
+    StickerApi.getList()
+        .then(setStickers)
+        .then(renderList)
         .finally(() => toggleLoading());
 }
 
-function onHeaderBTNClick() {
-    return ELEMENT.STICKER_CONTAINER.prepend(renderNewStickerHTML);
+function setStickers(data) {
+    return (stickersArr = data);
 }
 
-function onStickerContainerClick(e) {
-    if ($(e.target).hasClass(SELECTOR.CLASS_STICKER)) {
-        const currentSticker = $(e.target).closest(SELECTOR.CLASS_STICKER_BODY);
-
-        addUpdateClass(currentSticker);
-        updateSticker(currentSticker);
-    }
-    if ($(e.target).hasClass(SELECTOR.CLASS_STICKER_BTN)) {
-        const sticker = $(e.target).closest(SELECTOR.CLASS_STICKER_BODY);
-        const id = $(sticker).attr("data-id");
-
-        if (id == "") {
-            deleteStickerFrom(sticker);
-
-            return;
-        }
-        deleteStickerFrom(sticker);
-
-        DataApi
-            .delete(id)
-            .catch(showError);
-        removeStickerEvent(sticker);
-    }
+function getNoteElementById(id) {
+    return $stickerListEl.find(`[data-sticker-id="${id}"]`);
 }
 
-function updateSticker(sticker) {
-    $(sticker).mouseleave(() => onStickerMousLeave(sticker));
+function createSticker(newSticker) {
+    StickerApi.create(newSticker)
+        .then(addSticker);
 }
 
-function onStickerMousLeave(sticker) {
-    const STICKER = {
-        id: "",
-        description: "",
-    };
+function saveSticker(id, changes) {
+    const sticker = stickersArr.find((el) => el.id == id);
 
-    STICKER.id = $(sticker).attr("data-id");
-    STICKER.description = $(sticker).children(SELECTOR.CLASS_STICKER_CONT).val();
-
-    removeUpdateClass(sticker);
-
-    if (STICKER.description != "") {
-        if (STICKER.id == "") {
-            DataApi
-                .create(STICKER)
-                .then(() => init());
-            removeStickerEvent(sticker);
-
-            return;
-        }
-        DataApi
-            .update(STICKER, STICKER.id)
-            .catch(showError);
-        removeStickerEvent(sticker);
-
-        return;
-    }
-    removeStickerEvent(sticker);
+    Object.keys(changes).forEach((key) => (sticker[key] = changes[key]));
+    StickerApi
+        .update(id, sticker);
 }
 
-function createStickers(data) {
-    const stickers = Array.from(data);
+function deleteSticker(id) {
+    stickersArr = stickersArr.filter((el) => el.id != id);
 
-    let stickersHTML = stickers
-        .map((sticker) => renderStickerHTML(sticker))
-        .join("");
-
-    ELEMENT.STICKER_CONTAINER.html(stickersHTML);
+    deleteStickerElement(id);
+    StickerApi
+        .delete(id);
 }
 
-function renderStickerHTML(sticker) {
-    return $stickerHTML
-        .replaceAll("{{id}}", sticker.id)
-        .replace("{{description}}", sticker.description)
-        .replace("{{placeholder}}", "")
-        .replace("{{update}}", "");
+function deleteStickerElement(id) {
+    const $element = getNoteElementById(id);
+
+    $element && $element.remove();
 }
 
-function renderNewStickerHTML() {
-    return $stickerHTML
-        .replaceAll("{{id}}", "")
-        .replace("{{description}}", "")
-        .replace("{{placeholder}}", "Enter yor text")
-        .replace("{{update}}", SELECTOR.CLASS_STICKER_UPDATE);
+function renderList(list) {
+    $(STICKER_LIST).html(list.map(getItemHtml).join(''));
 }
 
-function addUpdateClass(sticker) {
-    $(sticker)
-        .children(SELECTOR.CLASS_STICKER_CONT)
-        .addClass(SELECTOR.CLASS_STICKER_UPDATE);
+function submitForm() {
+    const newSticker = getFormData();
+    createSticker(newSticker);
 }
 
-function removeUpdateClass(sticker) {
-    $(sticker)
-        .children(SELECTOR.CLASS_STICKER_CONT)
-        .removeClass(SELECTOR.CLASS_STICKER_UPDATE);
+function getFormData() {
+    return { description: '' };
 }
 
-function deleteStickerFrom(sticker) {
-    $(sticker).remove();
+function addSticker(sticker) {
+    stickersArr.push(sticker);
+    renderList(stickersArr);
 }
 
-function removeStickerEvent(sticker) {
-    $(sticker).off("mouseleave");
+function getItemHtml({ description, id }) {
+    return stickerTemplate
+        .replace('{{description}}', description)
+        .replace('{{id}}', id);
 }
 
-function showError(e) {
-    $(SELECTOR.ERROR).text(e.message);
+function getElementIndex($el) {
+    const $sticker = getNoteElementByChild($el);
 
-    setTimeout(() => error.textContent = '', 5000);
+    return $sticker && $sticker.data('stickerId');
+}
+
+function getNoteElementByChild($child) {
+    return $child.closest('.sticker__item');
 }
 
 function toggleLoading() {
-    $(SELECTOR.LOADING).toggleClass(SELECTOR.CLASS_HIDE);
+    $(LOADING).toggleClass(CLASS_HIDE);
 }

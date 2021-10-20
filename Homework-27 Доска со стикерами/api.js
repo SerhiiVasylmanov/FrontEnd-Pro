@@ -1,59 +1,34 @@
-"use strict";
+class StickerApi {
+    static URL = 'https://5dd3d5ba8b5e080014dc4bfa.mockapi.io/stickers';
 
-class DataApi {
-    static URL = "https://5dd3d5ba8b5e080014dc4bfa.mockapi.io/stickers";
-    static HEADERS = {
-        Accept: "application/json",
-        "Content-type": "application/json; charset=UTF-8",
-    };
-
-    static request(uri, method, data) {
+    static request(uri = '', method = 'GET', data) {
         return fetch(`${this.URL}${uri}`, {
             method,
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json; charset=UTF-8',
+                'Content-type': 'application/json; charset=UTF-8',
             },
             body: data ? JSON.stringify(data) : undefined,
-        });
+        })
+            .then((res) => res.json());
     }
 
-    static get() {
-        return this.request('').then((res) => {
-            if (res.ok) {
-                return res.json();
-            }
-            throw new Error(`${res.status}. Can't get stickers from server!`);
-        });
+    static getList() {
+        return this.request();
     }
 
-    static create(description, id) {
-        return this.request('', 'POST', (description))
-            .then((res) => {
-                if (res.ok || res.status == 201) {
-                    return res.json();
-                }
-                throw new Error(`${res.status}. Can't create sticker on server!`);
-            });
+    static getOne(id) {
+        return this.request(`/${id}`);
     }
 
-    static update(sticker, id) {
-        return this.request(`/${sticker.id}`, 'PUT', (sticker))
-            .then((res) => {
-                if (res.ok) {
-                    return res.json();
-                }
-                throw new Error(`${res.status}. Can't update this sticker on server!`);
-            });
+    static create(data) {
+        return this.request('', 'POST', data);
+    }
+
+    static update(id, data) {
+        return this.request(`/${id}`, 'PUT', data);
     }
 
     static delete(id) {
-        return this.request(`/${id}`, 'DELETE')
-            .then((res) => {
-                if (res.ok || res.status == 204) {
-                    return res.json();
-                }
-                throw new Error(`${res.status}. Can't delete this sticker from server!`);
-            });
+        return this.request(`/${id}`, 'DELETE');
     }
 }
