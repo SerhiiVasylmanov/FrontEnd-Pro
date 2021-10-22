@@ -1,0 +1,84 @@
+@import url(./reset.css);
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+#table-post {
+    width: 100%;
+    margin: 0 auto;
+    border-spacing: 20px 20px;
+    border: 1px solid black;
+}
+
+.caption {
+    font-size: 40px;
+    text-align: center;
+    margin-bottom: 50px;
+}
+
+.error {
+    color: red;
+    font-size: 20px;
+}
+
+.table-header {
+    text-transform: uppercase;
+    font-size: 24px;
+}
+
+.post-item, #loading {
+    font-size: 20px;
+    text-align: center;
+}
+
+.table-footer {
+    text-align: center;
+}
+
+#input-post-title, #input-post-body, #add-post-btn, .button-delete-post, .button-edit-post {
+    height: 30px;
+    box-sizing: border-box;
+}
+
+#add-post-btn, .button-delete-post, .button-edit-post {
+    border: none;
+    color: white;
+    width: 150px;
+    cursor: pointer;
+}
+
+#add-post-btn {
+    background-color: green;
+}
+
+.button-delete-post {
+    background-color: red;
+}
+
+.button-edit-post {
+    background-color: green;
+    margin-bottom: 5px;
+}
+
+.hide {
+    display: none;
+}
+
+.validateTips {
+    margin-bottom: 50px;
+}
+
+.form {
+    max-width: 100%;
+}
+
+fieldset label {
+    display: inline-block;
+    margin-bottom: 10px;
+}
+
+fieldset input {
+    width: 90%;
+    margin-bottom: 20px;
+}
