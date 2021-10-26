@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>Homework-28</title>
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.13.0/themes/base/jquery-ui.css"
+    />
+    <link rel="stylesheet" href="./style.css" />
+    <script
+      defer
+      src="https://code.jquery.com/jquery-3.6.0.js"
+    ></script>
+    <script
+      defer
+      src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"
+    ></script>
+    <script defer src="../Utils/Validation.js"></script>
+    <script defer src="./api.js"></script>
+    <script defer src="./FormModal.js"></script>
+    <script defer src="./custom.js"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="header-buttons">
+        <button id="addBtn">Add</button>
+      </div>
+      <table id="table-post" class="u-full-width">
+        <thead class="table-header">
+          <tr>
+            <th>Title</th>
+            <th>Body</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="postListContainer"></tbody>
+      </table>
+    </div>
+
+    <script type="text/template" id="postItemTemplate">
+      <tr class="post-item" data-id="{{id}}">
+        <td>{{title}}</td>
+        <td>{{body}}</td>
+        <td>
+          <button class="edit-btn">Edit</button>
+          <button class="delete-btn">Delete</button>
+        </td>
+      </tr>
+    </script>
+
+    <div id="postModal" title="Post" class="hide">
+      <form>
+        <fieldset>
+          <input name="id" type="hidden" />
+          <div>
+            <label for="title">Title: </label>
+            <input id="title" type="text" name="title" required />
+          </div>
+          <div>
+            <label for="body">Body: </label>
+            <input id="body" type="text" name="body" required />
+          </div>
+        </fieldset>
+      </form>
+    </div>
+  </body>
+</html>
