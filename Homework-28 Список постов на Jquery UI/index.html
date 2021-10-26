@@ -21,58 +21,54 @@
       defer
       src="https://code.jquery.com/ui/1.13.0/jquery-ui.js"
     ></script>
+    <script defer src="../Utils/Validation.js"></script>
     <script defer src="./api.js"></script>
+    <script defer src="./FormModal.js"></script>
     <script defer src="./custom.js"></script>
   </head>
+
+  <body>
     <div class="container">
-      <table id="table-post">
-        <caption class="caption">
-          Список публикаций
-          <button id="add-post-btn">Добавить</button>        
-        </caption>
+      <div class="header-buttons">
+        <button id="addBtn">Add</button>
+      </div>
+      <table id="table-post" class="u-full-width">
         <thead class="table-header">
           <tr>
-            <th>Id</th>
-            <th>Заголовок</th>
-            <th>Текст</th>
-            <th>Действия</th>
+            <th>Title</th>
+            <th>Body</th>
+            <th>Actions</th>
           </tr>
         </thead>
-        <tbody id="list-post"></tbody>
+        <tbody id="postListContainer"></tbody>
       </table>
     </div>
-    <script id="post-template" type="text/template">
-      <tr
-        class='post-item'
-        data-post-index='{{id}}'
-      >
-          <td class='post-id'>{{id}}</td>
-          <td class='post-title'>{{title}}</td>
-          <td class='post-body'>{{body}}</td>
-          <td>
-              <button class='button-edit-post'>Edit</button>
-              <button class='button-delete-post'>Delete</button>
-          </td>
+
+    <script type="text/template" id="postItemTemplate">
+      <tr class="post-item" data-id="{{id}}">
+        <td>{{title}}</td>
+        <td>{{body}}</td>
+        <td>
+          <button class="edit-btn">Edit</button>
+          <button class="delete-btn">Delete</button>
+        </td>
       </tr>
     </script>
-    <div id="postModal" title="Post">
-      <p class="validateTips">All form fields are required.</p>
 
-      <form class="form">
+    <div id="postModal" title="Post" class="hide">
+      <form>
         <fieldset>
-          <label for="title">Title</label>
-          <input type="hidden" name="id" />
-          <input type="text" name="title" id="title" />
-          <label for="body">Body</label>
-          <input type="text" name="body" id="body">
-          <input
-            type="submit"
-            tabindex="-1"
-            style="position: absolute; top: -1000px"
-          />
+          <input name="id" type="hidden" />
+          <div>
+            <label for="title">Title: </label>
+            <input id="title" type="text" name="title" required />
+          </div>
+          <div>
+            <label for="body">Body: </label>
+            <input id="body" type="text" name="body" required />
+          </div>
         </fieldset>
       </form>
     </div>
   </body>
 </html>
-

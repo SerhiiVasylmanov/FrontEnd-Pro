@@ -1,181 +1,129 @@
-const TEMPLATE_SELECTOR = '#post-template';
-const TABLE_POST = '#table-post';
-const LIST_POST = '#list-post';
-const INPUT_ITEM = '#input-post-info';
-const INPUT_POST_TITLE = '#input-post-title';
-const INPUT_POST_BODY = '#input-post-body';
-const ADD_POST_BTN = '#add-post-btn';
-const EDIT_POST_BTN = '.button-edit-post';
-const DELETE_POST_BTN = '.button-delete-post';
-const POST_ITEM = '.post-item';
-const LOADING = '#loading';
-const ERROR = '#error';
-const CLASS_HIDE = 'hide';
-const MODAL_SELECTOR = '#postModal';
-
-const EMPTY_POST = {
+const SELECTOR = Object.freeze({
+    ADD_BTN: '#addBtn',
+    EDIT_BTN: '.edit-btn',
+    DELETE_BTN: '.delete-btn',
+    MODAL: '#postModal',
+    POST_ITEM: '.post-item',
+    POST_ITEM_TPL: '#postItemTemplate',
+    POST_LIST: '#postListContainer',
+});
+const NEW_POST = {
     id: '',
-    body: '',
     title: '',
+    body: ''
 };
-let postsList = [];
 
-const postTemplate = $(TEMPLATE_SELECTOR).html();
-const $postListEl = $(LIST_POST)
-    .on('click', DELETE_POST_BTN, onDeleteClick)
-    .on('click', EDIT_POST_BTN, onEditButtonClick);
+const $postListEl = $(SELECTOR.POST_LIST);
+const modal = new FormModal($(SELECTOR.MODAL), savePost);
+let posts = [];
 
-$(ADD_POST_BTN).on('click', onAddPostButtonClick);
+$(SELECTOR.ADD_BTN).on('click', onAddBtnClick)
+$postListEl
+    .on('click', SELECTOR.EDIT_BTN, onEditBtnClick)
+    .on('click', SELECTOR.DELETE_BTN, onDeleteBtnClick);
 
 init();
 
-const $form = $(`${MODAL_SELECTOR} form`)[0];
-const $modal = $(MODAL_SELECTOR).dialog({
-    autoOpen: false,
-    height: 400,
-    width: 350,
-    modal: true,
-    buttons: {
-        Save: () => {
-            const post = getModalPost();
-
-            if (post.id) {
-                updatePost(post.id, post);
-            } else {
-                createPost(post);
-            }
-            closeModal();
-        },
-        Cancel: closeModal,
-
-    },
-    close: closeModal,
-});
-
-function onAddPostButtonClick() {
-    openModal(EMPTY_POST);
-}
-
-function onDeleteClick(e) {
-    const $element = $(this).parent();
-
-    $element.fadeOut(1000, () => deletePost(getElementIndex($element)));
-}
-
-function onEditButtonClick(e) {
-    const $input = $(this);
-    const id = getElementIndex($input);
-    const post = postsList.find((item) => +item.id === id);
-
-    openModal(post);
-}
-
 function init() {
-    getList();
-}
-
-function getList() {
     PostApi.getList()
-        .then(setData)
-        .then(renderList)
+        .then(setPosts)
+        .then(addPostListOnUI);
 }
 
-function setData(data) {
-    return postsList = data;
+function onAddBtnClick() {
+    modal.open(NEW_POST);
 }
 
-function getPostElementById(id) {
-    return $postListEl.find(`[data-post-index="${id}"]`);
+function onEditBtnClick(e) {
+    const id = findPostItemElIndex(e.target);
+    const post = findPost(id);
+
+    modal.open(post);
 }
 
-function createPost(post) {
-    PostApi.create(post)
-        .then((post) => {
-            postsList.push(post);
-            renderPost(post);
-        });
-}
+function onDeleteBtnClick(e) {
+    const id = findPostItemElIndex(e.target);
+    const $postEl = findPostItemElByIndex(id);
 
-function updatePost(id, changes) {
-    const post = postsList.find((el) => el.id == id);
+    post = posts.filter(post => +post.id !== +id);
 
-    Object.keys(changes).forEach((key) => (post[key] = changes[key]));
-    PostApi.update(id, post);
-}
-
-
-function deletePost(id) {
-    postsList = postsList.filter((el) => el.id != id);
-
-    deletePostElement(id);
+    $postEl.remove();
     PostApi.delete(id);
 }
 
-function deletePostElement(id) {
-    const $element = getPostElementById(id);
+function savePost(post) {
+    if (!isValidPost(post)) {
+        return alert('Post Title and Body required');
+    }
 
-    $element && $element.remove();
+    if (post.id) {
+        updatePost(post.id, post);
+    } else {
+        createPost(post);
+    }
+
+    modal.close();
 }
 
-function renderList(postsList) {
-    postsList.forEach(renderPost);
+function createPost(post) {
+    PostApi.create(post).then((newPost) => {
+        posts.push(newPost);
+        addPostOnUI(newPost);
+    })
 }
 
-function renderPost(post) {
-    const $postElement = $(getPostHtml(post));
+function updatePost(id, data) {
+    const post = findPost(id);
 
-    $postListEl.append($postElement);
+    Object.keys(data).forEach(key => post[key] = data[key]);
+
+    updatePostOnUI(id, post);
+    PostApi.update(id, post);
 }
 
-function getPostHtml(post) {
-    return postTemplate
-        .replace('{{id}}', post.id)
-        .replace('{{id}}', post.id)
-        .replace('{{title}}', post.title)
-        .replace('{{body}}', post.body);
+function addPostListOnUI(list) {
+    list.forEach(addPostOnUI);
 }
 
-function getElementIndex($el) {
-    const $post = getPostElementByChild($el);
+function addPostOnUI(post) {
+    const $postEl = $(generatePostHTML(post));
 
-    return $post && $post.data('postIndex');
+    $postListEl.append($postEl);
 }
 
-function getPostElementByChild($child) {
-    return $child.closest(POST_ITEM);
+function updatePostOnUI(id, post) {
+    const $oldPostEl = findPostItemElByIndex(id);
+    const $newPostEl = $(generatePostHTML(post));
+
+    $oldPostEl.replaceWith($newPostEl);
 }
 
-function openModal(post) {
-    setModalPost(post);
-    $modal.dialog("open")
+function generatePostHTML(post) {
+    let html = $(SELECTOR.POST_ITEM_TPL).html();
+
+    for (const [key, val] of Object.entries(post)) {
+        html = html.replace(`{{${key}}}`, val);
+    }
+
+    return html;
 }
 
-function closeModal() {
-    $modal.dialog("close");
-    $form.reset();
+function findPostItemElByIndex(id) {
+    return $postListEl.find(`[data-id="${id}"]`)?.closest(SELECTOR.POST_ITEM);
 }
 
-function setModalPost(post) {
-    $form.id.value = post.id;
-    $form.title.value = post.title;
-    $form.body.value = post.body;
+function findPostItemElIndex(el) {
+    return el.closest(SELECTOR.POST_ITEM)?.dataset?.id;
 }
 
-function getModalPost() {
-    return {
-        ...EMPTY_POST,
-        id: $form.id.value,
-        title: $form.title.value,
-        body: $form.body.value,
-    };
+function findPost(id) {
+    return posts.find(post => +post.id === +id);
 }
 
-function toggleLoading() {
-    $(LOADING).toggleClass(CLASS_HIDE);
+function setPosts(list) {
+    return posts = list;
 }
 
-function handleError(e) {
-    error.textContent = e.message;
-
-    setTimeout(() => error.textContent = '', 5000);
+function isValidPost(post) {
+    return !Validation.isEmpty(post.title) && !Validation.isEmpty(post.body);
 }
