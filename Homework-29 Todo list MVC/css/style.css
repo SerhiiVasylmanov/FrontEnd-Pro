@@ -1,0 +1,54 @@
+@import url(./reset.css);
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 50px 15px;
+}
+
+.todo-item {
+    margin-bottom: 20px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.todo-item p {
+    padding: 0 10px;
+}
+
+.done {
+    background-color: green;
+    color: white;
+}
+
+.delete-btn {
+    padding: 5px;
+    margin-left: 15px;
+    background-color: red;
+    color: white;
+    cursor: pointer;
+}
+#addTodoForm{
+    display: flex;
+    justify-content: space-between;
+    max-width: 500px;
+    margin: 50px auto 0;
+    align-items: center;
+}
+
+#todoNameInput{
+    padding: 5px;
+}
+
+.addBtn {
+    min-width: 100px;
+    font-size: 20px;
+    padding: 5px 10px;
+    background-color: green;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    margin-left: 20px;
+    cursor: pointer;
+}
