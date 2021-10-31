@@ -1,0 +1,31 @@
+body {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+    width: 100%;
+}
+
+#albums, #photos {
+    width: 50%;
+}
+
+.album-item {
+    margin-bottom: 10px;
+    font-size: 24px;
+    text-transform: capitalize;
+    cursor: pointer;
+    color: rgb(143, 143, 143);
+    font-size: 40px;
+    text-align: center;
+}
+
+.album-item:hover {
+    color: black;
+    font-weight: 800;
+}
