@@ -1,0 +1,67 @@
+@import url(./reset.scss);
+
+#app {
+  max-width: 1200px;
+  margin: 100px auto 0;
+  padding: 0 15px;
+}
+
+.table {
+  border: 1px solid black;
+  width: 100%;
+  margin-bottom: 20px;
+  .table-header {
+    th {
+      font-size: 24px;
+      padding: 10px;
+    }
+  }
+  #students_list {
+    .student {
+      td {
+        padding: 5px;
+        font-size: 20px;
+      }
+      .input {
+        width: 50px;
+      }
+      .action-btn {
+        text-align: center;
+        .delete {
+          cursor: pointer;
+          background-color: red;
+          color: white;
+          border: none;
+          font-size: 16px;
+        }
+      }
+    }
+  }
+}
+
+#add-form {
+  font-weight: bold;
+  font-size: 30px;
+  display: block;
+  text-align: center;
+  cursor: pointer;
+}
+
+#student-form {
+  display: flex;
+  justify-content: center;
+  #studentNameInput {
+    padding: 5px;
+    margin-right: 10px;
+  }
+  #addStudentBtn {
+    font-size: 16px;
+    margin-left: 10px;
+    width: 100px;
+    padding: 5px;
+    border: none;
+    background-color: green;
+    color: white;
+    cursor: pointer;
+  }
+}
